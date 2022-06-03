@@ -1,21 +1,14 @@
-const http = require('http');
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.use('/', (req,res,next) => {
-   console.log('This always runs');
-   next();
-});
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/add-product', (req,res,next) => {
-    console.log('In another middleware');
-    res.send('<h1>The "add product" Page</h1>')
-});
+app.use(adminRoutes);
 
-app.use('/', (req,res,next) => {
-    console.log('In another middleware');
-    res.send('<h1>Hello from express.</h1>')
-});
+app.use(shopRoutes);
 
 // node.js will always call the createServer whenever a request reach the server
 // the createServer method returns a server. So it needs to be stored
