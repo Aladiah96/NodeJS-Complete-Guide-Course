@@ -1,18 +1,17 @@
+const path = require('path');
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const app = express();
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(adminRoutes);
-
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-// node.js will always call the createServer whenever a request reach the server
-// the createServer method returns a server. So it needs to be stored
-const server = http.createServer(app);
+app.use((req,res, next) => {
+  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+});
 
-// listen starts a process where where nodeJS will keep listening for incoming reqs.
-server.listen(3000);
+app.listen(3000);
